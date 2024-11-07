@@ -1,0 +1,25 @@
+services:
+  piwigo:
+    container_name: "piwigo"
+    build: https://github.com/linuxserver/docker-piwigo.git 
+    volumes:
+      - ./images:/gallery
+      - ./config:/config
+    restart: unless-stopped
+    ports:
+      - 1928:443
+      - 1927:80
+    depends_on: 
+      - piwigo-db
+
+  piwigo-db:
+    image: mysql
+    container_name: piwigo-db
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: random_username
+      MYSQL_PASSWORD: CHANGEME
+      MYSQL_ROOT_PASSWORD: CHANGEME
+      MYSQL_DATABASE: piwigo
+    volumes:
+      - ./piwigo/db:/var/lib/mysql

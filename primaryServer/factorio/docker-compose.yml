@@ -1,0 +1,10 @@
+services:
+  factorio:
+    image: factoriotools/factorio:stable
+    #container_name: "factorio"
+    #ports:
+    #  - "42069:42069/udp"
+    environment:
+      - PORT=42069
+    volumes:
+      - .:/factorio

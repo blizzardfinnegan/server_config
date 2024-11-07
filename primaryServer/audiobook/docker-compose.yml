@@ -1,0 +1,24 @@
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    build: 
+      context: https://git.blizzard.systems/github-mirrors/audiobookshelf.git#${AUDIOBOOK_VERSION}
+    volumes:
+      - audiobooks:/audiobooks
+      - podcasts:/podcasts
+      - books:/ebooks
+      - ./config:/config
+      - ./metadata:/metadata
+    restart: unless-stopped
+    labels:
+      - homepage.group=Streaming
+      - homepage.name=Audiobooks
+      - homepage.href=https://audiobook.blizzard.systems
+      - homepage.icon=audiobookshelf.png
+      - homepage.description=Audiobook and Podcast client
+
+
+volumes:
+  audiobooks:
+  podcasts:
+  books:

@@ -1,0 +1,41 @@
+include:
+  - ./audiobook/docker-compose.yml
+    #- ./automations/docker-compose.yml
+  - ./blog/docker-compose.yml
+  #- ./budget/docker-compose.yml
+  - ./caddy/docker-compose.yml
+  - ./factorio/docker-compose.yml
+  - ./feedReader/docker-compose.yml
+    #- ./focalboard/docker-compose.yml
+    #- ./gitRepo/docker-compose.yml
+    #- ./inventory/docker-compose.yml
+    #- ./journal/docker-compose.yml
+  - ./jellyfin/docker-compose.yml
+  - ./landingPage/docker-compose.yml
+    #- ./logging/docker-compose.yml
+  - ./ladder/docker-compose.yml
+    #- ./matrix/docker-compose.yml
+    #- ./minecraft/docker-compose.yml
+    #- ./mirrorHosting/docker-compose.yml
+    #- ./monitoring/docker-compose.yml
+    #- ./music/docker-compose.yml
+    #- ./piwigo/docker-compose.yml
+    #- ./tickets/docker-compose.yml
+    #- ./wekan/docker-compose.yml
+
+#If network is manually defined:
+#networks:
+#  default:
+#    name: internal
+#    external: true
+
+networks:
+  default:
+        name: internal
+        driver: bridge
+        ipam:
+          driver: default
+          config:
+            - subnet: ${SUBNET}/24
+              ip_range: ${SUBNET}/24
+              gateway: ${GATEWAY}

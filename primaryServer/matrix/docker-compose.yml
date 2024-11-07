@@ -1,0 +1,37 @@
+## TO BE FIXED
+services:
+  frontend:
+    container_name: "matrix-frontend"
+    build: "./matrix/sources/frontend"
+    restart: unless-stopped
+    volumes:
+      - ./matrix/frontend/config.json:/app/config.json
+  
+  voip:
+    container_name: "matrix-voip"
+    build:
+      context: "./matrix/sources/voip/."
+      dockerfile: "./docker/coturn/debian/Dockerfile"
+    restart: unless-stopped
+    volumes:
+      - ./matrix/turnserver.conf:/etc/coturn/turnserver.conf
+    ports:
+      - 49160:49160/udp
+      - 3478:3478
+      - 5349:5349
+  
+  admin:
+    container_name: "matrix-admin"
+    build: "./matrix/sources/admin/."
+    restart: unless-stopped
+  
+  backend:
+    container_name: "matrix-backend"
+    build:
+      context: "./matrix/sources/backend/."
+      dockerfile: "./docker/Dockerfile"
+    restart: unless-stopped
+    volumes:
+      - ./matrix/backend:/data
+    ports:
+      - 8448:8448

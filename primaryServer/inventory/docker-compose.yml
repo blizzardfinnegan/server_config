@@ -1,0 +1,12 @@
+# NOT IN USE
+services:
+  homebox:
+    container_name: homebox
+    build: https://github.com/sysadminsmedia/homebox.git#v0.15.2
+    restart: unless-stopped
+    environment:
+    - HBOX_LOG_LEVEL=info
+    - HBOX_LOG_FORMAT=text
+    - HBOX_WEB_MAX_UPLOAD_SIZE=10
+    volumes:
+      - ./data:/data/

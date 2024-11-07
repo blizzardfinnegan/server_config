@@ -1,0 +1,51 @@
+services:
+  forgejo:
+    container_name: forgejo
+    build: https://codeberg.org/forgejo/forgejo.git#{FORGEJO_VERSION}
+    environment:
+      - USER_GID=1004
+      - USER_UID=1004
+      - GNUPGHOME=/data/gitea/home/.gnupg
+    ports:
+      - "26:22"
+    restart: unless-stopped
+    volumes:
+      - ./gitRepo/.ssh:/data/git/.ssh
+      - ./gitRepo/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    cap_add:
+      - SYS_CHROOT
+
+  woodpecker-server:
+    image: woodpeckerci/woodpecker-server:latest
+    container_name: ci_server
+    ports:
+      - 9001:9000
+    volumes:
+      - ./gitRepo/ci_data:/var/lib/woodpecker/
+    environment:
+      - WOODPECKER_OPEN=false
+      - WOODPECKER_ADMIN=blizzardfinnegan
+      - WOODPECKER_HOST=https://ci.blizzard.systems
+      - WOODPECKER_GITEA=true
+      - WOODPECKER_GITEA_URL=https://git.blizzard.systems
+      - WOODPECKER_GITEA_CLIENT=
+      - WOODPECKER_GITEA_SECRET=
+      - WOODPECKER_AGENT_SECRET=
+    restart: unless-stopped
+
+  woodpecker-agent:
+    image: woodpeckerci/woodpecker-agent:latest
+    container_name: ci_local_runner
+    command: agent
+    restart: unless-stopped
+    depends_on:
+      - woodpecker-server
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WOODPECKER_SERVER=ci_server:9000
+      - WOODPECKER_AGENT_SECRET=
+      - WOODPECKER_MAX_PROCS=6

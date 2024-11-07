@@ -1,0 +1,17 @@
+services:
+  caddy:
+    image: caddy:${CADDY_VERSION}
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      #Static file serving
+      #- ./site:/srv
+      - ./data:/data
+      - ./config:/config
+

@@ -1,0 +1,9 @@
+services:
+  mirror-serve:
+    image: ghcr.io/kiwix/kiwix-serve:latest
+    container_name: "mirror-serve"
+    volumes:
+      - .:/data
+    command:
+      - "*.zim"
+    restart: unless-stopped

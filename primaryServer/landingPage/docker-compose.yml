@@ -1,0 +1,12 @@
+services:
+  flame:
+    container_name: flame
+    build: 
+      context: https://github.com/pawelmalak/flame#v2.3.1 
+      dockerfile: .docker/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration
+    environment:
+      - PASSWORD=CHANGEME
+    restart: unless-stopped

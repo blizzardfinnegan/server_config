@@ -1,0 +1,60 @@
+groups:
+  - name: primaryServer
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary:  "Instance {{ $labels.instance }} down!"
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for 30 seconds. Please respond immediately."
+      - alert: LowRemainingStorage
+        expr: (node_filesystem_size_bytes{instance="PRIMARY_SERVER:9100",fstype=~"btrfs|vfat|zfs|ext4"} - node_filesystem_avail_bytes{instance="PRIMARY_SERVER:9100",fstype=~"btrfs|vfat|zfs|ext4"}) / node_filesystem_size_bytes{instance="PRIMARY_SERVER:9100"} > 0.7
+        labels: 
+          severity: warning
+        annotations:
+          summary: "Low storage on {{ $labels.instance }}"
+          description: "{{ $labels.device }} on, mounted at {{ $labels.mountpoint }}, has less than 30% free. Consider purchasing more storage, or purging storage device."
+      - alert: VeryLowRemainingStorage
+        expr: (node_filesystem_size_bytes{instance="PRIMARY_SERVER:9100",fstype=~"btrfs|vfat|zfs|ext4"} - node_filesystem_avail_bytes{instance="PRIMARY_SERVER:9100",fstype=~"btrfs|vfat|zfs|ext4"}) / node_filesystem_size_bytes{instance="PRIMARY_SERVER:9100"} > 0.8
+        labels: 
+          severity: critical
+        annotations:
+          summary: "Very low storage on {{ $labels.instance }}"
+          description: "{{ $labels.device }} on, mounted at {{ $labels.mountpoint }}, has less than 20% free. Expect performance issues. Purchase more storage immediately, and/or purge storage device of excess files."
+      - alert: erroredContainer
+        expr: engine_daemon_container_states_containers{state=~"paused|stopped"} > 0
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container(s) errored out!"
+          description: "Check primary server immediately."
+
+  - name: HomeAssistant
+    rules:
+      - alert: IoTLowBattery
+        expr: homeassistant_sensor_battery_percent{entity=~".*airsensor.*"} < 50
+        labels:
+          severity: info
+        annotations:
+          summary: "Air sensor {{ $labels.entity }} has low battery."
+          description: "{{ $labels.entity }} battery is currently under 50%. Please consider replacing battery."
+
+      - alert: IoTVeryLowBattery
+        expr: homeassistant_sensor_battery_percent{entity=~".*airsensor.*"} < 25
+        labels:
+          severity: warning
+        annotations:
+          summary: "Air sensor {{ $labels.entity }} has low battery."
+          description: "{{ $labels.entity }} battery is currently under 25%. Replace battery."
+
+      - alert: UpdateAvailable
+        expr: homeassistant_update_state > 0
+        labels:
+          severity: info
+        annotations:
+          summary: "{{ $labels.friendly_name }} Available!"
+          description: "Please update the appropriate HomeAssistant add-on/module at your earliest convenience."
+
+

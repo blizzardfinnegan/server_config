@@ -1,0 +1,12 @@
+services:
+  music-stream:
+    container_name: navidrome
+    image: deluan/navidrome:0.51.1
+    volumes:
+      - music:/music
+      - ./music/data:/data
+    restart: unless-stopped
+    environment:
+      ND_JUKEBOX_ENABLED: true
+      ND_SCANSCHEDULE: 1h
+      ND_BASEURL: https://stream.blizzard.systems

@@ -1,0 +1,29 @@
+services:
+  jellyfin:
+    build: 
+      context: git
+      dockerfile: docker/Dockerfile
+      args:
+        JELLYFIN_VERSION: 10.10.0
+        #Don't modify these; necessary for build
+        DOTNET_ARCH: x64
+        IMAGE_ARCH: amd64
+        QEMU_ARCH: x86_64
+        PACKAGE_ARCH: amd64
+    container_name: jellyfin
+    group_add: 
+      - "104" #input group; required for Intel GPU. See https://jellyfin.org/docs/general/administration/hardware-acceleration/intel#configure-with-linux-virtualization
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - /mnt/glacier/Movies:/movies
+      - /mnt/glacier/TV:/tv
+    restart: "unless-stopped"
+    environment:
+      - PGID=997
+      - PUID=998
+
+    #Intel GPU Passthrough
+    #devices:
+    #  - /dev/dri/renderD128:/dev/dri/renderD128
+

@@ -1,0 +1,10 @@
+services:
+  memos:
+    container_name: journal
+    image: nephatrine/write-freely:latest
+    environment:
+      TZ: America/New_York
+    volumes:
+      - ./journal/config:/mnt/config
+    restart:
+      unless-stopped

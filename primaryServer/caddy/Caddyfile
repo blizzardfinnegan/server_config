@@ -1,0 +1,72 @@
+{ 
+	email	blizzardfinnegan@gmail.com 
+}
+
+audiobook.blizzard.systems {
+	reverse_proxy http://audiobookshelf:80
+}
+
+subtitles.blizzard.systems {
+	reverse_proxy http://bazarr:6767
+}
+
+ci.blizzard.systems {
+	reverse_proxy http://ci_server:8000
+}
+
+home.blizzard.systems {
+	reverse_proxy http://flame:5005
+}
+
+git.blizzard.systems {
+	reverse_proxy http://forgejo:3000
+}
+
+jellyfin.blizzard.systems {
+	reverse_proxy http://jellyfin:8096
+	
+}
+
+matrix-frontend.blizzard.systems {
+	reverse_proxy http://matrix-frontend:80
+}
+
+matrix.blizzard.systems {
+	reverse_proxy http://matrix-backend:8008
+}
+
+12ft.blizzard.systems {
+	reverse_proxy http://ladder:8080
+}
+
+feed.blizzard.systems {
+	reverse_proxy http://miniflux:8080
+}
+
+search.blizzard.systems {
+	reverse_proxy http://mirror-serve:8080
+}
+
+qbt.blizzard.systems {
+	reverse_proxy http://mullvad:8090
+}
+
+pictures.blizzard.systems {
+	reverse_proxy http://piwigo:80
+}
+
+mastodon.blizzard.systems {
+	reverse_proxy http://pleroma_web:4000
+}
+
+indexers.blizzard.systems {
+	reverse_proxy http://prowlarr:9696
+}
+
+movies.blizzard.systems {
+	reverse_proxy http://radarr:7878
+}
+
+tv.blizzard.systems {
+	reverse_proxy http://sonarr:8989
+}

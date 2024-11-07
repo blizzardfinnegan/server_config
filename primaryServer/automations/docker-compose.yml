@@ -1,0 +1,116 @@
+services: 
+  transmission-openvpn:
+    image: yacht7/openvpn-client
+    container_name: mullvad
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - KILL_SWITCH=off
+      - SUBNETS=${SUBNET}
+    devices:
+      - /dev/net/tun
+    ports:
+      #VPN/Web port 
+      - 1500:1500
+      - 5665:5665
+      #QBT UI Port
+      - 8090:8090
+    volumes:
+      - ./mullvad_openvpn:/data/vpn
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    restart: unless-stopped
+
+  qbittorrent:
+    image: linuxserver/qbittorrent:${QBT_VERSION}
+    container_name: qbittorrent
+    environment:
+        - TZ=America/New_York
+        - UMASK_SET=022
+        - WEBUI_PORT=8090
+    volumes:
+        - ./automations/qbt:/config
+        - tempFolder:/downloads
+        - tvDownloads:/tvdownloads 
+        - filmDownloads:/filmdownloads 
+        - bookDownloads:/bookdownloads 
+        - musicDownloads:/musicdownloads
+    network_mode: service:transmission-openvpn
+    restart: unless-stopped
+    depends_on:
+      - transmission-openvpn
+
+  sonarr: #TV
+        image: linuxserver/sonarr:${SONARR_VERSION}
+        container_name: sonarr
+        environment:
+            - TZ=America/New_York
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - ./sonarr:/config
+            - tv:/tv
+            - tvDownloads:/downloads
+        restart: unless-stopped
+        depends_on:
+          - qbittorrent
+
+  prowlarr: #Indexer management
+        image: lscr.io/linuxserver/prowlarr:${PROWLARR_VERSION}
+        container_name: prowlarr
+        environment:
+            - TZ=America/New_York
+        volumes:
+            - ./prowlarr:/config
+        restart: unless-stopped
+        depends_on:
+          - qbittorrent
+
+  radarr: #Movies
+        image: linuxserver/radarr:${RADARR_VERSION}
+        container_name: radarr
+        environment:
+            - TZ=America/New_York
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - ./automations/radarr:/config
+            - movies:/movies
+            - filmDownloads:/downloads
+        restart: unless-stopped
+        depends_on:
+          - qbittorrent
+
+  bazarr: #Subtitles
+    image: lscr.io/linuxserver/bazarr:${BAZARR_VERSION}
+    container_name: bazarr
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - ./automations/bazarr:/config
+      - movies:/movies 
+      - tv:/tv 
+    restart: unless-stopped
+
+#  readarr:
+#    image: lscr.io/linuxserver/readarr:develop
+#    container_name: readarr
+#    environment:
+#      - TZ=America/New_York
+#    volumes:
+#      - ./automations/readarr:/config
+#      - /mnt/glacier/Audiobooks:/books
+#      - /mnt/glacier/torrentSync/readarrParsing:/downloads
+#    restart: unless-stopped
+#    depends_on:
+#      - qbittorrent
+#
+volumes:
+  tempFolder:
+  tvDownloads:
+  filmDownloads:
+  bookDownloads:
+  musicDownloads:
+  tv:
+  movies:
