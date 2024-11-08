@@ -27,4 +27,4 @@ The "primary" server denotes the server where the majority of the work will be d
 
 |Name|Containing folder|Usage|In-use|
 |---|---|---|---|
-|Audiobookshelf|`audiobook`|Storage and collection of audiobooks, ebooks, and podcasts| <ul><li>[x]</li></ul>|
+|Audiobookshelf|`audiobook`|Storage and collection of audiobooks, ebooks, and podcasts| <ul><li>[x] item</li></ul>|
