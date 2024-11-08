@@ -22,3 +22,9 @@ The "primary" server denotes the server where the majority of the work will be d
 |`man-db`|Manual for installed software; Often called "man pages"|
 
 *: "POSIX Compliance" is a standard for most shell programs, like `bash` and `sh`, which allow scripts to run largely regardless of which shell is installed. Some scripts and copy-paste commands expect POSIX compliance, so if/when scripts don't work in `fish`, `bash` is used instead. 
+
+# Services
+
+|Name|Containing folder|Usage|In-use|
+|---|---|---|---|
+|Audiobookshelf|`audiobook`|Storage and collection of audiobooks, ebooks, and podcasts| - [x]|
