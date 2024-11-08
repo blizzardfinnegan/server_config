@@ -25,7 +25,32 @@ The "primary" server denotes the server where the majority of the work will be d
 
 # Services
 
-use me for later: ×
 |Name|Containing folder|Usage|In-use|
 |---|---|---|---|
 |Audiobookshelf|`audiobook`|Storage and collection of audiobooks, ebooks, and podcasts|✔|
+|Mullvad VPN|`automations`|VPN service for other containers|✔|
+|QBittorrent|`automations`|Torrent client|✔|
+|Sonarr|`automations`|TV series requesting service|✔|
+|Radarr|`automations`|Movie requesting service|✔|
+|Prowlarr|`automations`|Torrent indexer|✔|
+|Bazarr|`automations`|Subtitle requesting service (tied to Sonarr and Radarr)|✔|
+|Readarr|`automations`|eBook requesting service|×|
+|Pleroma|`blog`|Mastodon/Fediverse client/instance|✔|
+|Caddy|`caddy`|Reverse proxy service|✔|
+|Factorio|`factorio`|Selfhosted Factorio server|✔|
+|Miniflux|`feedReader`|RSS Feed Agregator and reader|✔|
+|Forgejo|`gitRepo`|Self-hosted Github alternative|✔|
+|Woodpecker|`gitRepo`|CI/CD Frontend|✔|
+|Homebox|`inventory`|Inventory management system|×|
+|Jellyfin|`jellyfin`|Media and Content viewing server|✔|
+|Write-Freely|`journal`|Blogging site|×|
+|Ladder|`ladder`|Self-hosted `12ft.io` alternative|✔|
+|Flame|`landingPage`|Landing page; link to pages|✔|
+|Matrix|`matrix`|Matrix instance and client|×|
+|Minecraft|`mainecraft`|Self-hosted Minecraft server|✔|
+|Kiwix|`mirrorHosting`|Self-hosted mirrors of popular wiki content|×|
+|Prometheus Exporter|`monitoring`|Metrics endpoint for Prometheus|✔|
+|cAdvisor|`monitoring`|Container Advisor backend|✔|
+|Navidrome|`music`|Music streaming service|×|
+|Piwigo|`piwigo`|Self-hosted image server \[paired with MagicMirror]|✔|
+|Wekan|`wekan`|Trello alternative|×|
